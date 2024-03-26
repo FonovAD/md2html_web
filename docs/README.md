@@ -1,6 +1,7 @@
 # md2html_web
 
-Продолжение проекта Markdown2HTML (https://github.com/PepsiKingIV/Markdown2HTML). \ В планах создать сайт подобный: https://md2pdf.netlify.app/ 
+Продолжение проекта Markdown2HTML (https://github.com/PepsiKingIV/Markdown2HTML). \ 
+В планах создать подобный сайт https://md2pdf.netlify.app/ 
 
 ### Стиль оформления коммитов:
 https://gist.github.com/bibendi/7941823
