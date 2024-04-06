@@ -1,7 +1,6 @@
 package apiserver
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -42,11 +41,6 @@ func (s *APIserver) ConfigureLogger() error {
 
 func (s *APIserver) ConfigureRouter() {
 	s.router.HandleFunc("/hello", s.HandleHello())
-}
-
-// test handle
-func (s *APIserver) HandleHello() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %s", r.RemoteAddr)
-	}
+	s.router.HandleFunc("/", s.HandleMain())
+	s.router.HandleFunc("/md2html", s.HandleMDFile())
 }
