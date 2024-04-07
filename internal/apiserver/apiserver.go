@@ -42,5 +42,7 @@ func (s *APIserver) ConfigureLogger() error {
 func (s *APIserver) ConfigureRouter() {
 	s.router.HandleFunc("/hello", s.HandleHello())
 	s.router.HandleFunc("/", s.HandleMain())
-	s.router.HandleFunc("/md2html", s.HandleMDFile())
+	s.router.HandleFunc("/md2htmlFile", s.HandleMDFile())
+	s.router.HandleFunc("/md2htmlText", s.HandleMDBody())
+
 }
