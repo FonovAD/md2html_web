@@ -2,6 +2,21 @@ package processing
 
 import "bytes"
 
+const (
+	LINEprefix          = "<hr stule=\"border: none; background-color: black; color: black; height: 2px;\"></hr>"
+	NUMBEREDLISTprefix1 = `<li style="list-style-type:'`
+	NUMBEREDLISTprefix2 = `'; margin-left:1vw">`
+	NUMBEREDLISTpostfix = "</li>"
+	CODEprefix          = "<code>"
+	CODEpostfix         = "</code>"
+	LISTprefix          = `<li style="margin-left:1vw">`
+	LISTpostfix         = "</li>"
+	ITALICprefix        = "<i>"
+	ITALICpostfix       = "</i>"
+	BOLTprefix          = "<b>"
+	BOLTpostfix         = "</b>"
+)
+
 func Run(node StatmentsNode, file_size int) string {
 	var HTML bytes.Buffer
 	HTML.Grow(file_size)
@@ -24,7 +39,7 @@ func LineLayout(node Node) string {
 		}
 	case "LINE":
 		{
-			HTMLLine.WriteString("<hr stule=\"border: none; background-color: black; color: black; height: 2px;\"></hr>")
+			HTMLLine.WriteString(LINEprefix)
 		}
 	case "SEMICOLON": // It will never happen
 		{ // Reserved for future feature additions
@@ -39,21 +54,21 @@ func LineLayout(node Node) string {
 		}
 	case "NUMBEREDLIST":
 		{
-			HTMLLine.WriteString(`<li style="list-style-type:'`)
+			HTMLLine.WriteString(NUMBEREDLISTprefix1)
 			HTMLLine.WriteString(node.operator.Text)
-			HTMLLine.WriteString(`'; margin-left:1vw">`)
+			HTMLLine.WriteString(NUMBEREDLISTprefix2)
 			for i := range node.operand {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
-			HTMLLine.WriteString("</li>")
+			HTMLLine.WriteString(NUMBEREDLISTpostfix)
 		}
 	case "CODE":
 		{
-			HTMLLine.WriteString("<code>")
+			HTMLLine.WriteString(CODEprefix)
 			for i := range node.operand {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
-			HTMLLine.WriteString("</code>")
+			HTMLLine.WriteString(CODEpostfix)
 		}
 	case "SPACE":
 		{
@@ -64,26 +79,26 @@ func LineLayout(node Node) string {
 		}
 	case "LIST":
 		{
-			HTMLLine.WriteString(`<li style="margin-left:1vw">`)
+			HTMLLine.WriteString(LISTprefix)
 			for i := range node.operand {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
-			HTMLLine.WriteString("</li>")
+			HTMLLine.WriteString(LISTpostfix)
 		}
 	case "ITALIC":
 		{
-			HTMLLine.WriteString("<i>")
+			HTMLLine.WriteString(ITALICprefix)
 			HTMLLine.WriteString(node.operator.Text[1 : len(node.operator.Text)-1])
-			HTMLLine.WriteString("</i>")
+			HTMLLine.WriteString(ITALICpostfix)
 			for i := range node.operand {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
 		}
 	case "BOLT":
 		{
-			HTMLLine.WriteString("<b>")
+			HTMLLine.WriteString(BOLTprefix)
 			HTMLLine.WriteString(node.operator.Text[2 : len(node.operator.Text)-2])
-			HTMLLine.WriteString("</b>")
+			HTMLLine.WriteString(BOLTpostfix)
 			for i := range node.operand {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
@@ -95,7 +110,6 @@ func LineLayout(node Node) string {
 				HTMLLine.WriteString(LineLayout(*node.operand[i]))
 			}
 		}
-
 	}
 	return HTMLLine.String()
 }
